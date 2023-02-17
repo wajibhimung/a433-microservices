@@ -2,8 +2,7 @@
 version: "3.7"
 services:
   item-app:
-    #Mengambil  image item-app dari Docker Registry
-    #image: wajibhimung/item-app:v1
+    #Mengambil  image item-app dari  GitHub Packages
     image: ghcr.io/wajibhimung/item-app:v1
     #Agar container  restart ketika terhenti
     restart: always

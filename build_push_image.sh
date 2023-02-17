@@ -9,19 +9,13 @@ echo "\nList docker images"
 docker images
 
 echo "\nMengubah nama docker image sesuai format docker registry"
-#Mengubah nama image agar sesuai dengan format Docker Hub (atau GitHub Packages bila menerapkan saran keempat)
-#docker tag item-app:v1 wajibhimung/item-app:v1
+#Mengubah nama image agar sesuai dengan format  GitHub Packages
 docker tag item-app:v1 ghcr.io/wajibhimung/item-app:v1
 
-echo "\nLogin ke Docker Hub"
-#Login ke Docker Hub 
-#echo $PASSWORD_DOCKER_HUB | docker login -u wajibhimung --password-stdin
+echo "\nLogin ke  GitHub Packages"
+#Login ke  GitHub Packages
 echo $CR_PAT | docker login ghcr.io -u wajibhimung --password-stdin
 
-echo "\nMengunggah image ke Docker Hub ..."
-#Mengunggah image ke Docker Hub
-#docker push wajibhimung/item-app:v1
+echo "\nMengunggah image ke  GitHub Packages ..."
+#Mengunggah image ke  GitHub Packages
 docker push ghcr.io/wajibhimung/item-app:v1
-
-
-

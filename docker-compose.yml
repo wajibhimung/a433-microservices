@@ -3,7 +3,8 @@ version: "3.7"
 services:
   item-app:
     #Mengambil  image item-app dari Docker Registry
-    image: wajibhimung/item-app:v1
+    #image: wajibhimung/item-app:v1
+    image: ghcr.io/wajibhimung/item-app:v1
     #Agar container  restart ketika terhenti
     restart: always
     #port mapping agar dapat diakses dari port 80 di host

@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+#Menggunakan objek Deployment
+kind: Deployment
+#Nama dan label dari objek Deployment
+metadata:
+  name: karsajobs 
+  labels:
+    app: karsajobs
+spec:
+#Jumlah pod replica
+  replicas: 2
+#Mencocokan service karsajobs
+  selector:
+    matchLabels:
+      app: karsajobs
+  template:
+  #Template nama atau label untuk pod
+    metadata:
+      labels:
+        app: karsajobs 
+    spec:
+      containers:
+      #nama container
+        - name: karsajobs
+        #mengambil image container
+          image: ghcr.io/wajibhimung/karsajobs:latest 
+          #Port untuk container
+          ports:
+            - containerPort: 8080 
+          env:
+          #Mendefiniskan APP_PORT
+            - name: APP_PORT
+              value: "8080"
+          #Mendefiniskan MONGO_HOST 
+            - name: MONGO_HOST
+              value: "mongo"
+          #Mendefinisikan MONGO_USER yang diambil dari  mongo-secret
+            - name: MONGO_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_USERNAME
+          #Mendefinisikan MONGO_PASS yang diambil dari  mongo-secret
+            - name: MONGO_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_PASSWORD

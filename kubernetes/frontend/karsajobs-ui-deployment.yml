@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+#Menggunakan objek Deployment
+kind: Deployment
+#Nama dan label dari objek Deployment
+metadata:
+  name: karsajobs-ui 
+  labels:
+    app: karsajobs-ui
+spec:
+#Jumlah pod replica
+  replicas: 2
+#Mencocokan service karsajobs-ui
+  selector:
+    matchLabels:
+      app: karsajobs-ui
+  template:
+   #Template nama atau label untuk pod
+    metadata:
+      labels:
+        app: karsajobs-ui 
+    spec:
+      containers:
+      #nama container
+        - name: karsajobs-ui
+        #mengambil image container
+          image: ghcr.io/wajibhimung/karsajobs-ui:latest 
+          #Port untuk container
+          ports:
+            - containerPort: 8000 

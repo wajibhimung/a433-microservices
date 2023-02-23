@@ -1,0 +1,40 @@
+apiVersion: v1
+#Menggunakan objek PersistentVolume
+kind: PersistentVolume
+metadata:
+  #Nama dan label Persistent Volume 
+  name: mongo-pv
+  labels:
+    type: local
+spec:
+  #Nama kelas penyimpanan Persistent Volume 
+  storageClassName: manual
+  capacity:
+  #Alokasi penyimpanan 2Gi
+    storage: 2Gi
+  accessModes:
+  #Dapat dibaca dan ditulis
+    - ReadWriteOnce
+  hostPath:
+  #Penyimpanan pada /data/db
+    path: "/data/db"
+
+---
+apiVersion: v1
+#Menggunakan objek Persistent Volume Clain
+kind: PersistentVolumeClaim
+metadata:
+  #Nama dan label Persistent Volume Clain
+  name: mongo-pv-claim
+  labels:
+    app: mongo
+spec:
+#Menggunakan kelas penyimpanan manual
+  storageClassName: manual
+  accessModes:
+  #dapat membaca dan menulis penyimpanan
+    - ReadWriteOnce
+  resources:
+    requests:
+    #Permintaan kapasitas penyimpanan 1Gi
+      storage: 2Gi

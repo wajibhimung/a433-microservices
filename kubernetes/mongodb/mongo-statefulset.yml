@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+#Menggunakan objek StatefulSet
+kind: StatefulSet
+#Nama dan label dari objek StatefulSet
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+spec:
+  selector:
+  #Mencocokan service
+    matchLabels:
+      app: mongo
+      tier: backend
+  #Nama service yang digunakan
+  serviceName: mongo
+  #Jumlah pod replica
+  replicas: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+    #Template nama atau label untuk pod
+      labels:
+        app: mongo
+        tier: backend
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      #mengambil image container
+        - image: mongo:4.4.19-rc2
+          #nama container
+          name: mongo
+          env:
+            #mendefinisikan data untuk MONGO_INITDB_ROOT_USERNAME_FILE MONGO_INITDB_ROOT_PASSWORD_FILE
+            #yang diambil dari /etc/mongo-credentials/ dari mongo secret
+            - name: MONGO_INITDB_ROOT_USERNAME_FILE
+              value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+              value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+          ports:
+          #port mongo db
+            - containerPort: 27017
+              name: mongo
+          volumeMounts:
+          #Mount volume untuk mongo-persistent-storage
+            - name: mongo-persistent-storage
+              mountPath: /data/db
+          #Mount volume untuk mongo-config-map
+            - name: mongo-config-map
+              mountPath: /config
+          #Mount volume untuk mongo-secrets
+            - name: mongo-secrets
+              mountPath: /etc/mongo-credentials     
+      volumes:
+      #mongo-persistent-storage akan menggunakan claim persistentVolume mongo-pv-claim
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-pv-claim
+      #mongo-config-map akan menggunakan mongo-config
+        - name: mongo-config-map
+          configMap:
+            name: mongo-config
+            items: 
+              - key: mongo.conf
+                path: mongo.conf
+      #mongo-secrets akan menggunakan mongo-secret
+        - name: mongo-secrets
+          secret:
+            secretName: mongo-secret

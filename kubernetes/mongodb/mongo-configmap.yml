@@ -1,0 +1,11 @@
+apiVersion: v1
+#menggunakan objek configmap
+kind: ConfigMap
+metadata:
+#nama config map mongo-config
+  name: mongo-config
+data:
+#membuat key vdengan nama mongo.conf dan datanya
+  mongo.conf: |
+    storage:
+      dbPath: /data/db

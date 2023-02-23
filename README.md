@@ -1,2 +1,1 @@
-# a433-microservices
-Repository ini digunakan untuk kebutuhan kelas Belajar Membangun Arsitektur Microservices
+Repository ini berisi folder kubernetes, file monitoring.txt, dan screenshoot grafana dashboard untuk submission
